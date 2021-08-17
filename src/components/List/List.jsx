@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import PlaceDetails from '../PlaceDetails/PlaceDetails'
+
 import {
   CircularProgress,
   Grid,
@@ -12,7 +14,7 @@ import {
 
 import useStyle from './styles'
 
-const List = () => {
+const List = ({ places }) => {
   const classes = useStyle()
 
   const [type, setType] = useState('restaurants')
@@ -40,6 +42,13 @@ const List = () => {
           <MenuItem value={4.5}>Above 4.5</MenuItem>
         </Select>
       </FormControl>
+      <Grid container spacing={3} className={classes.list}>
+        {places?.map((places, i) => (
+          <Grid item key={i} xs={12}>
+            <PlaceDetails place={places} />
+          </Grid>
+        ))}
+      </Grid>
     </div>
   )
 }
