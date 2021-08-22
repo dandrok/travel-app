@@ -14,20 +14,33 @@ import {
 
 import useStyle from './styles'
 
-const List = ({ places, childClicked, isLoading }) => {
+const List = ({
+  places,
+  childClicked,
+  isLoading,
+  rating,
+  setRating,
+  type,
+  setType,
+}) => {
   const classes = useStyle()
-
-  const [type, setType] = useState('restaurants')
-  const [rating, setRating] = useState('')
 
   const [elRefs, setElRefs] = useState([])
 
-  useEffect(() => {
-    const refs = Array(places?.length)
-      .fill()
-      .map((_, i) => elRefs[i] || createRef())
+  // useEffect(() => {
+  //   const refs = Array(places?.length)
+  //     .fill()
+  //     .map((_, i) => elRefs[i] || createRef())
 
-    setElRefs(refs)
+  //   setElRefs(refs)
+  // }, [places])
+
+  useEffect(() => {
+    setElRefs((refs) =>
+      Array(places?.length)
+        .fill()
+        .map((_, i) => refs[i] || createRef())
+    )
   }, [places])
 
   return (
@@ -59,12 +72,12 @@ const List = ({ places, childClicked, isLoading }) => {
             </Select>
           </FormControl>
           <Grid container spacing={3} className={classes.list}>
-            {places?.map((places, i) => (
-              <Grid item key={i} xs={12}>
+            {places?.map((place, i) => (
+              <Grid ref={elRefs[i]} key={i} item xs={12}>
                 <PlaceDetails
-                  place={places}
                   selected={Number(childClicked) === i}
                   refProp={elRefs[i]}
+                  place={place}
                 />
               </Grid>
             ))}
